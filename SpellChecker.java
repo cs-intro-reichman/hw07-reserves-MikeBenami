@@ -11,25 +11,39 @@ public class SpellChecker {
 	}
 
 	public static String tail(String str) {
-		// Your code goes here
+		return str.substring(1);
 	}
 
 	public static int levenshtein(String word1, String word2) {
-		// Your code goes here
+		if (word1.isEmpty()) return word2.length();
+		if (word2.isEmpty()) return word1.length();
+		int cost = (word1.charAt(0) == word2.charAt(0)) ? 0 : 1;
+		
+		return Math.min(Math.min(levenshtein(tail(word1), word2) + 1, levenshtein(word1, tail(word2)) +1), levenshtein(tail(word1), tail(word2)) + cost); 
 	}
 
 	public static String[] readDictionary(String fileName) {
 		String[] dictionary = new String[3000];
-
 		In in = new In(fileName);
-
-		// Your code here
-
+		int index = 0;
+		while (!in.isEmpty() && index < dictionary.length) {
+			dictionary[index] = in.readString().toLowerCase();
+			index++;
+		}
 		return dictionary;
 	}
 
 	public static String spellChecker(String word, int threshold, String[] dictionary) {
-		// Your code goes here
+		String closestMatch = word;
+		int minDistance = Integer.MAX_VALUE;
+		for (String dictWord : dictionary){
+			int distance = levenshtein(word, dictWord);
+			if (distance < minDistance) {
+				minDistance = distance;
+				closestMatch = dictWord;
+			}
+		}
+		return minDistance <= threshold ? closestMatch : word;
 	}
 
 }
