@@ -6,8 +6,10 @@ public class HashTagTokenizer {
 
 		String hashTag = args[0].toLowerCase();
 		String []dictionary = readDictionary("dictionary.txt");
-		breakHashTag(hashTag, dictionary);
-	}
+		if (!breakHashTag(hashTag, dictionary)) {
+            System.out.println("::error::The output for test did not match");
+	    }
+    }
 
 	public static String[] readDictionary(String fileName) {
 		String[] dictionary = new String[3000];
