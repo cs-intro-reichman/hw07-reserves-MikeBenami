@@ -38,6 +38,7 @@ public class HashTagTokenizer {
         for (int i = index + 1; i <= hashtag.length(); i++) {
             String substr = hashtag.substring(index, i);
             if (existInDictionary(substr, dictionary)) {
+				System.out.println(substr);
 				if (breakHashTagRecursive(hashtag, dictionary, i)) {
 					return true;
 				}
