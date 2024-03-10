@@ -29,26 +29,23 @@ public class HashTagTokenizer {
 	}
 
 	public static void breakHashTag(String hashtag, String[] dictionary) {
-        breakHashTagRecursive(hashtag, dictionary, "");
+		if (!breakHashTagRecursive(hashtag, dictionary, 0)) {
+            System.out.println("::error::The output for test did not match");
+	    }
 	}
- 
-    private static void breakHashTagRecursive(String hashtag, String[] dictionary, String prefix) {
-		if (hashtag.isEmpty()) {
-			if (!prefix.isEmpty()) {
-				System.out.println(prefix);
-			}
-			return;
-		}
-		for (int i = 0; i <= hashtag.length(); i++){
-			String substr = hashtag.substring(0, i);
-			if (existInDictionary(substr, dictionary)) {
-				String newPrefix = prefix.isEmpty() ? substr : prefix + " " + substr;
-				breakHashTagRecursive(hashtag.substring(i), dictionary, newPrefix);
-			}
-		}
-	}
-		
-        
+	private static boolean breakHashTagRecursive(String hashtag, String[] dictionary, int start) {
+        if (start == hashtag.length()) {
+            return true;
+        }
+        for (int end = start + 1; end <= hashtag.length(); end++) {
+            String substr = hashtag.substring(start, end);
+            if (existInDictionary(substr, dictionary) && breakHashTagRecursive(hashtag, dictionary, end)) {
+                System.out.println(substr);
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 
