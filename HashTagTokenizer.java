@@ -6,10 +6,8 @@ public class HashTagTokenizer {
 
 		String hashTag = args[0].toLowerCase();
 		String []dictionary = readDictionary("dictionary.txt");
-		if (!breakHashTag(hashTag, dictionary)) {
-            System.out.println("::error::The output for test did not match");
-	    }
-    }
+		breakHashTag(hashTag, dictionary);
+	}
 
 	public static String[] readDictionary(String fileName) {
 		String[] dictionary = new String[3000];
@@ -31,17 +29,16 @@ public class HashTagTokenizer {
 	}
 
 	public static boolean breakHashTag(String hashtag, String[] dictionary) {
-		return breakHashTagRecursive(hashtag, dictionary, 0,"");
+		return breakHashTagRecursive(hashtag, dictionary, 0);
 	}
-	private static boolean breakHashTagRecursive(String hashtag, String[] dictionary, int start, String result) {
-        if (start == hashtag.length()) {
-			System.out.println(result.trim());
+	private static boolean breakHashTagRecursive(String hashtag, String[] dictionary, int index) {
+        if (index == hashtag.length()) {
             return true;
         }
-        for (int end = start + 1; end <= hashtag.length(); end++) {
-            String substr = hashtag.substring(start, end);
+        for (int i = index + 1; i <= hashtag.length(); i++) {
+            String substr = hashtag.substring(index, i);
             if (existInDictionary(substr, dictionary)) {
-				if (breakHashTagRecursive(hashtag, dictionary, end, result + substr + " ")) {
+				if (breakHashTagRecursive(hashtag, dictionary, i)) {
 					return true;
 				}
             }
