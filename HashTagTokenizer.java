@@ -28,20 +28,20 @@ public class HashTagTokenizer {
 		return false;
 	}
 
-	public static void breakHashTag(String hashtag, String[] dictionary) {
-		if (!breakHashTagRecursive(hashtag, dictionary, 0)) {
-            System.out.println("::error::The output for test did not match");
-	    }
+	public static boolean breakHashTag(String hashtag, String[] dictionary) {
+		return breakHashTagRecursive(hashtag, dictionary, 0,"");
 	}
-	private static boolean breakHashTagRecursive(String hashtag, String[] dictionary, int start) {
+	private static boolean breakHashTagRecursive(String hashtag, String[] dictionary, int start, String result) {
         if (start == hashtag.length()) {
+			System.out.println(result.trim());
             return true;
         }
         for (int end = start + 1; end <= hashtag.length(); end++) {
             String substr = hashtag.substring(start, end);
-            if (existInDictionary(substr, dictionary) && breakHashTagRecursive(hashtag, dictionary, end)) {
-                System.out.println(substr);
-                return true;
+            if (existInDictionary(substr, dictionary)) {
+				if (breakHashTagRecursive(hashtag, dictionary, end, result + substr + " ")) {
+					return true;
+				}
             }
         }
         return false;
